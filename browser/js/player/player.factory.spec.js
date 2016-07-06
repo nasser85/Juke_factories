@@ -142,7 +142,7 @@ describe('`PlayerFactory` factory', function () {
 
   });
 
-  xdescribe('#previous', function () {
+  describe('#previous', function () {
 
     var songList;
 
@@ -168,7 +168,7 @@ describe('`PlayerFactory` factory', function () {
   });
 
 
-  xdescribe('#getProgress', function () {
+  describe('#getProgress', function () {
 
     it('is 0 before playing song', function () {
       expect(PlayerFactory.getProgress()).to.equal(0);
