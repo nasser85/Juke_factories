@@ -7,7 +7,7 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFac
   GetAlbums.fetchAll()
   .then(function (res) { return res.data; })
   .then(function (albums) {
-    return $http.get('/api/albums/' + albums[0].id); // temp: get one
+    return GetAlbums.fetchById(albums[0].id); // temp: get one
   })
   .then(function (res) { return res.data; })
   .then(function (album) {

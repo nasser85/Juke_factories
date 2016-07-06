@@ -12,6 +12,7 @@
     <script src="/js/player/player.factory.js" defer></script>
     <script src="/js/album/album.factory.js" defer></script>
     <script src="/js/album/album.statFactory.js" defer></script>
+    <script src="/js/album/album.new.controller.js" defer></script>
   </head>
   <body ng-app="juke">
     <div id="main" class="container-fluid">
@@ -28,7 +29,24 @@
       </div>
 
       <div class="col-xs-10">
-        <div class="album" ng-controller="AlbumCtrl">
+      <div ng-show="true" ng-controller = "newAlbumCtrl">
+          <h3>Albums</h3>
+          <div class="row">
+            <div ng-repeat= "album in albums" class="col-xs-4">
+              <a class="thumbnail" href="#">
+                <img ng-src= '/api/albums/{{album.id}}/image' >
+                <div class="caption">
+                  <h5>
+                    <span>{{album.name}}</span>
+                  </h5>
+                  <small>{{albumLength[album.id - 1]}} songs</small>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div ng-show="false" class="album" ng-controller="AlbumCtrl">
           <p>
             <h3>
               <span>{{ album.name }}</span>
@@ -59,6 +77,7 @@
             </tbody>
           </table>
         </div>
+        
       </div>
 
       <footer>
