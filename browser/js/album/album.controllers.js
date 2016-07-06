@@ -1,9 +1,10 @@
 'use strict';
 
-juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log) {
+juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log, StatsFactory, GetAlbums) {
 
   // load our initial data
-  $http.get('/api/albums/')
+  //$http.get('/api/albums/')
+  GetAlbums.fetchAll()
   .then(function (res) { return res.data; })
   .then(function (albums) {
     return $http.get('/api/albums/' + albums[0].id); // temp: get one
@@ -16,8 +17,15 @@ juke.controller('AlbumCtrl', function ($scope, $http, $rootScope, $log) {
       song.albumIndex = i;
     });
     $scope.album = album;
+    StatsFactory.totalTime(album)
+    .then(function (albumDuration) {
+        $scope.albumDuration = albumDuration;
+ });
   })
   .catch($log.error); // $log service can be turned on and off; also, pre-bound
+
+ 
+
 
   // main toggle
   $scope.toggle = function (song) {
