@@ -1,6 +1,6 @@
 'use strict';
 
-juke.factory('PlayerFactory', function(){
+juke.factory('PlayerFactory', function($rootScope){
   // non-UI logic in here
   var player = {
   	currentSong : null,
@@ -14,13 +14,14 @@ juke.factory('PlayerFactory', function(){
 
   audio.addEventListener('ended', function () {
     this.next();
-    // $scope.$apply(); // triggers $rootScope.$digest, which hits other scopes
-    //$scope.$evalAsync(); // likely best, schedules digest if none happening
+    //$scope.$apply(); // triggers $rootScope.$digest, which hits other scopes
+    $rootScope.$digest(); // likely best, schedules digest if none happening
   });
   audio.addEventListener('timeupdate', function () {
-    this.progress = 100 * audio.currentTime / audio.duration;
+
+    player.progress = audio.currentTime / audio.duration;
     // $scope.$digest(); // re-computes current template only (this scope)
-    //$scope.$evalAsync(); // likely best, schedules digest if none happening
+    $rootScope.$digest(); // likely best, schedules digest if none happening
   });
 
   player.start = function(song, songList){
@@ -46,6 +47,7 @@ juke.factory('PlayerFactory', function(){
   player.pause = function(){
   
     audio.pause();
+
     
   	this.playing = false;
     
@@ -86,6 +88,7 @@ juke.factory('PlayerFactory', function(){
   };
 
   player.getProgress = function() {
+    console.log(this.progress);
     return this.progress;
   }
 

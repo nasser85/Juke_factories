@@ -175,10 +175,11 @@ describe('`PlayerFactory` factory', function () {
     });
 
     it('is a decimal between 0 and 1 corresponding to audio play progress', function (done) {
-      this.timeout(5000);
+      this.timeout(10000);
       audioMock.addEventListener('playing', function () {
         setTimeout(function () {
           // the song is about 59 seconds long
+
           expect(PlayerFactory.getProgress()).to.be.closeTo(1.5/59, 0.01);
           done();
         }, 1500);
