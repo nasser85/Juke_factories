@@ -7,10 +7,22 @@ juke.factory('PlayerFactory', function(){
   	playing: false,
     albumLength: null,
     albumSongs: null,
-    progress: 0,
-    timeUpdate: null
+    progress: 0
+
   };
   var audio = document.createElement('audio');
+
+  audio.addEventListener('ended', function () {
+    this.next();
+    // $scope.$apply(); // triggers $rootScope.$digest, which hits other scopes
+    //$scope.$evalAsync(); // likely best, schedules digest if none happening
+  });
+  audio.addEventListener('timeupdate', function () {
+    this.progress = 100 * audio.currentTime / audio.duration;
+    // $scope.$digest(); // re-computes current template only (this scope)
+    //$scope.$evalAsync(); // likely best, schedules digest if none happening
+  });
+
   player.start = function(song, songList){
   	if(this.currentSong) { player.pause() };
   	if (song) {
@@ -23,7 +35,7 @@ juke.factory('PlayerFactory', function(){
         this.albumLength = songList.length;
         this.albumSongs = songList;
       }
-      this.timeUpdate = setInterval (function() {this.progress = audio.currentTime / audio.duration}, 1000);
+      
       this.playing = true;
     }
     
@@ -32,13 +44,11 @@ juke.factory('PlayerFactory', function(){
   
 
   player.pause = function(){
-  	clearInterval(this.timeUpdate);
+  
     audio.pause();
     
   	this.playing = false;
-    //this.progress = audio.currentTime;
-
-    console.log(this.progress, audio.currentTime);
+    
   }
 
   player.resume = function(){
@@ -76,10 +86,6 @@ juke.factory('PlayerFactory', function(){
   };
 
   player.getProgress = function() {
-    if (this.progress) {
-      console.log(+this.progress.toFixed(2))
-      return +this.progress.toFixed(2);
-    }
     return this.progress;
   }
 
